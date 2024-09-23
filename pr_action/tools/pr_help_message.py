@@ -5,7 +5,7 @@ import tempfile
 import copy
 from functools import partial
 
-from jinja2 import Environment, StrictUndefined
+from jinja2 import Environment, StrictUndefined, select_autoescape
 
 from pr_action.algo.ai_handlers.base_ai_handler import BaseAiHandler
 from pr_action.algo.ai_handlers.litellm_ai_handler import LiteLLMAIHandler
@@ -50,7 +50,7 @@ class PRHelpMessage:
     async def _prepare_prediction(self, model: str):
         try:
             variables = copy.deepcopy(self.vars)
-            environment = Environment(undefined=StrictUndefined)
+            environment = Environment(undefined=StrictUndefined, autoescape=select_autoescape(['html', 'xml']))
             system_prompt = environment.from_string(get_settings().pr_help_prompts.system).render(variables)
             user_prompt = environment.from_string(get_settings().pr_help_prompts.user).render(variables)
             response, finish_reason = await self.ai_handler.chat_completion(
