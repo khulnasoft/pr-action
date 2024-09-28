@@ -7,7 +7,7 @@ import time
 import requests
 import aiohttp
 
-from pr_action.action.pr_action import PRAction
+from pr_action.praction.pr_action import PRAction
 from pr_action.config_loader import get_settings
 from pr_action.git_providers import get_git_provider
 from pr_action.log import LoggingFormat, get_logger, setup_logger
