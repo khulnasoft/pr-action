@@ -46,6 +46,7 @@ class PRCodeSuggestions:
             self.is_extended = False
         num_code_suggestions = get_settings().pr_code_suggestions.num_code_suggestions_per_chunk
 
+
         self.ai_handler = ai_handler()
         self.ai_handler.main_pr_language = self.main_language
         self.patches_diff = None
@@ -74,11 +75,7 @@ class PRCodeSuggestions:
             "relevant_best_practices": "",
             "is_ai_metadata": get_settings().get("config.enable_ai_metadata", False),
         }
-        if 'claude' in get_settings().config.model:
-            # prompt for Claude, with minor adjustments
-            self.pr_code_suggestions_prompt_system = get_settings().pr_code_suggestions_prompt_claude.system
-        else:
-            self.pr_code_suggestions_prompt_system = get_settings().pr_code_suggestions_prompt.system
+        self.pr_code_suggestions_prompt_system = get_settings().pr_code_suggestions_prompt.system
 
         self.token_handler = TokenHandler(self.git_provider.pr,
                                           self.vars,
@@ -146,10 +143,14 @@ class PRCodeSuggestions:
                             pr_body += ' <!-- approve pr self-review -->'
 
                     # add usage guide
+                    if (get_settings().pr_code_suggestions.enable_chat_text and get_settings().config.is_auto_command
+                            and isinstance(self.git_provider, GithubProvider)):
+                        pr_body += "\n\n>💡 Need additional feedback ? start a [PR chat](https://chromewebstore.google.com/detail/ephlnjeghhogofkifjloamocljapahnl) \n\n"
                     if get_settings().pr_code_suggestions.enable_help_text:
                         pr_body += "<hr>\n\n<details> <summary><strong>💡 Tool usage guide:</strong></summary><hr> \n\n"
                         pr_body += HelpMessage.get_improve_usage_guide()
                         pr_body += "\n</details>\n"
+
 
                     # Output the relevant configurations if enabled
                     if get_settings().get('config', {}).get('output_relevant_configurations', False):
@@ -173,7 +174,7 @@ class PRCodeSuggestions:
                 else:
                     self.push_inline_code_suggestions(data)
                     if self.progress_response:
-                        self.progress_response.delete()
+                        self.git_provider.remove_comment(self.progress_response)
             else:
                 get_logger().info('Code suggestions generated for PR, but not published since publish_output is False.')
         except Exception as e:
@@ -618,13 +619,14 @@ class PRCodeSuggestions:
                 pr_body += "No suggestions found to improve this PR."
                 return pr_body
 
+            if get_settings().pr_code_suggestions.enable_intro_text and get_settings().config.is_auto_command:
+                pr_body += "Explore these optional code suggestions:\n\n"
+
             language_extension_map_org = get_settings().language_extension_map_org
             extension_to_language = {}
             for language, extensions in language_extension_map_org.items():
                 for ext in extensions:
                     extension_to_language[ext] = language
-
-            pr_body = "## PR Code Suggestions ✨\n\n"
 
             pr_body += "<table>"
             header = f"Suggestion"
@@ -686,7 +688,7 @@ class PRCodeSuggestions:
                     patch = "\n".join(patch_orig.splitlines()[5:]).strip('\n')
 
                     example_code = ""
-                    example_code += f"```diff\n{patch}\n```\n"
+                    example_code += f"```diff\n{patch.rstrip()}\n```\n"
                     if i == 0:
                         pr_body += f"""<td>\n\n"""
                     else:
@@ -742,7 +744,8 @@ class PRCodeSuggestions:
             variables = {'suggestion_list': suggestion_list,
                          'suggestion_str': suggestion_str,
                          "diff": patches_diff,
-                         'num_code_suggestions': len(suggestion_list)}
+                         'num_code_suggestions': len(suggestion_list),
+                         "is_ai_metadata": get_settings().get("config.enable_ai_metadata", False)}
             environment = Environment(undefined=StrictUndefined)
             system_prompt_reflect = environment.from_string(
                 get_settings().pr_code_suggestions_reflect_prompt.system).render(

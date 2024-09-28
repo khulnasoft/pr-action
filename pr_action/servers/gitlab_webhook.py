@@ -58,7 +58,7 @@ async def handle_request(api_url: str, body: str, log_context: dict, sender_id: 
         await PRAction().handle_request(api_url, body)
 
 
-async def _perform_commands_gitlab(commands_conf: str, action: PRAction, api_url: str,
+async def _perform_commands_gitlab(commands_conf: str, praction: PRAction, api_url: str,
                                    log_context: dict):
     apply_repo_settings(api_url)
     commands = get_settings().get(f"gitlab.{commands_conf}", {})
@@ -72,7 +72,7 @@ async def _perform_commands_gitlab(commands_conf: str, action: PRAction, api_url
             new_command = ' '.join([command] + other_args)
             get_logger().info(f"Performing command: {new_command}")
             with get_logger().contextualize(**log_context):
-                await action.handle_request(api_url, new_command)
+                await praction.handle_request(api_url, new_command)
         except Exception as e:
             get_logger().error(f"Failed to perform command {command}: {e}")
 

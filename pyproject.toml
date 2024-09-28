@@ -9,14 +9,13 @@ version = "0.2.4"
 authors = [{name= "KhulnaSoft", email = "info@khulnasoft.com"}]
 
 maintainers = [
-  {name = "KhulnaSoft Bot", email = "admin@khulnasoft.com"},
-  {name = "Al Mamun", email = "iconmamundentist@gmail.com"},
+  {name = "KhulnaSoft DevOps", email = "info@khulnasoft.com"},
 ]
 
 description = "KhulnaSoft PR-Action aims to help efficiently review and handle pull requests, by providing AI feedbacks and suggestions."
 readme = "README.md"
 requires-python = ">=3.10"
-keywords = ["AI", "Agents", "Pull Request", "Automation", "Code Review"]
+keywords = ["AI", "Actions", "Pull Request", "Automation", "Code Review"]
 license = {name = "Apache 2.0", file = "LICENSE"}
 
 classifiers = [
@@ -30,8 +29,8 @@ dynamic = ["dependencies"]
 dependencies = {file = ["requirements.txt"]}
 
 [project.urls]
-"Homepage" = "https://github.com/pr-action/pr-action"
-"Documentation" = "https://pr-action.github.io/"
+"Homepage" = "https://github.com/Pr-action/pr-action"
+"Documentation" = "https://pr-action-docs.khulnasoft.com/"
 
 [tool.setuptools]
 include-package-data = true
