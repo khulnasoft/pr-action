@@ -2,7 +2,7 @@ import argparse
 import asyncio
 import os
 
-from pr_action.action.pr_action import PRAction, commands
+from pr_action.praction.pr_action import PRAction, commands
 from pr_action.config_loader import get_settings
 from pr_action.log import setup_logger, get_logger
 

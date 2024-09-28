@@ -12,7 +12,7 @@ For private repositories, you will also need to install PR-Action Pro, After ins
 
 #### Context-aware PR chat
 
-PR-Action constructs a comprehensive context for each pull request, incorporating the PR description, commit messages, and code changes with extended dynamic context. This contextual information, along with additional PR-related data, forms the foundation for an AI-powered chat session. The action then leverages this rich context to provide intelligent, tailored responses to user inquiries about the pull request.
+PR-Action constructs a comprehensive context for each pull request, incorporating the PR description, commit messages, and code changes with extended dynamic context. This contextual information, along with additional PR-related data, forms the foundation for an AI-powered chat session. The praction then leverages this rich context to provide intelligent, tailored responses to user inquiries about the pull request.
 
 <img src="https://khulnasoft.com/images/pr_action/pr_chat_1.png" width="768">
 <img src="https://khulnasoft.com/images/pr_action/pr_chat_2.png" width="768">

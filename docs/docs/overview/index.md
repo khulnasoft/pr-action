@@ -9,17 +9,30 @@ KhulnaSoft PR-Action is an open-source tool to help efficiently review and handl
 - See the [Tools Guide](./tools/index.md) for a detailed description of the different tools.
 
 
+## PR-Action Docs Smart Search
+
+To search the documentation site using natural language:
+
+1) Comment `/help "your question"` in either:
+
+   - A pull request where PR-Action is installed
+   - A [PR Chat](https://pr-action-docs.khulnasoft.com/chrome-extension/features/#pr-chat)
+
+2) PR-Action will respond with an [answer](https://github.com/Pr-action/pr-action/pull/1241#issuecomment-2365259334) that includes relevant documentation links.
+
+
 ## PR-Action Features
+
 PR-Action offers extensive pull request functionalities across various git providers.
 
 |       |                                                                                                                       | GitHub | Gitlab | Bitbucket | Azure DevOps |
 |-------|-----------------------------------------------------------------------------------------------------------------------|:------:|:------:|:---------:|:------------:|
 | TOOLS | Review                                                                                                                |   ✅    |   ✅    |   ✅       |      ✅      |
 |       | ⮑ Incremental                                                                                                         |   ✅    |        |            |              |
-|       | ⮑ [SOC2 Compliance](https://pr-action.github.io/tools/review/#soc2-ticket-compliance){:target="_blank"} 💎        |   ✅    |   ✅    |   ✅        |      ✅      |
+|       | ⮑ [SOC2 Compliance](https://pr-action-docs.khulnasoft.com/tools/review/#soc2-ticket-compliance){:target="_blank"} 💎        |   ✅    |   ✅    |   ✅        |      ✅      |
 |       | Ask                                                                                                                   |   ✅    |   ✅    |   ✅        |      ✅      |
 |       | Describe                                                                                                              |   ✅    |   ✅    |   ✅        |      ✅      |
-|       | ⮑ [Inline file summary](https://pr-action.github.io/tools/describe/#inline-file-summary){:target="_blank"} 💎     |   ✅    |   ✅    |           |      ✅      |
+|       | ⮑ [Inline file summary](https://pr-action-docs.khulnasoft.com/tools/describe/#inline-file-summary){:target="_blank"} 💎     |   ✅    |   ✅    |           |      ✅      |
 |       | Improve                                                                                                               |   ✅    |   ✅    |   ✅        |      ✅      |
 |       | ⮑ Extended                                                                                                            |   ✅    |   ✅    |   ✅        |      ✅      |
 |       | [Custom Prompt](./tools/custom_prompt.md){:target="_blank"} 💎                                                        |   ✅    |   ✅    |   ✅        |      ✅      |

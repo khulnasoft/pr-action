@@ -36,7 +36,7 @@ Also note that collapsible are not supported in _Bitbucket_. Hence, the suggesti
 
 ### Automatic triggering
 
-To run the `improve` automatically when a PR is opened, define in a [configuration file](https://pr-action.github.io/usage-guide/configuration_options/#wiki-configuration-file):
+To run the `improve` automatically when a PR is opened, define in a [configuration file](https://pr-action-docs.khulnasoft.com/usage-guide/configuration_options/#wiki-configuration-file):
 ```
 [github_app]
 pr_commands = [
@@ -86,28 +86,46 @@ code_suggestions_self_review_text = "... (your text here) ..."
 ![self_review_1](https://khulnasoft.com/images/pr_action/self_review_1.png){width=512}
 
 
-💎 In addition, by setting:
-```
-[pr_code_suggestions]
-approve_pr_on_self_review = true
-```
-the tool can automatically approve the PR when the user checks the self-review checkbox.
 
-!!! tip "Tip - demanding self-review from the PR author"
-    If you set the number of required reviewers for a PR to 2, this effectively means that the PR author must click the self-review checkbox before the PR can be merged (in addition to a human reviewer).
+
+!!! tip "Tip - demanding self-review from the PR author 💎"
+
+    By setting:
+    ```
+    [pr_code_suggestions]
+    approve_pr_on_self_review = true
+    ```
+    the tool can automatically add an approval when the PR author clicks the self-review checkbox.
+
+
+    - If you set the number of required reviewers for a PR to 2, this effectively means that the PR author must click the self-review checkbox before the PR can be merged (in addition to a human reviewer).
 
     ![self_review_2](https://khulnasoft.com/images/pr_action/self_review_2.png){width=512}
+
+    - If you keep the number of required reviewers for a PR to 1 and enable this configuration, this effectively means that the PR author can approve the PR by actively clicking the self-review checkbox.
     
+        To prevent unauthorized approvals, this configuration defaults to false, and cannot be altered through online comments; enabling requires a direct update to the configuration file and a commit to the repository. This ensures that utilizing the feature demands a deliberate documented decision by the repository owner.
+ 
+
 ### How many code suggestions are generated?
 PR-Action uses a dynamic strategy to generate code suggestions based on the size of the pull request (PR). Here's how it works:
-1. Chunking large PRs:
-   - PR-Action divides large PRs into 'chunks'.
-   - Each chunk contains up to `pr_code_suggestions.max_context_tokens` tokens (default: 14,000).
-2. Generating suggestions:
-   - For each chunk, PR-Action generates up to `pr_code_suggestions.num_code_suggestions_per_chunk` suggestions (default: 4).
+
+1) Chunking large PRs:
+
+- PR-Action divides large PRs into 'chunks'.
+- Each chunk contains up to `pr_code_suggestions.max_context_tokens` tokens (default: 14,000).
+
+
+2) Generating suggestions:
+
+- For each chunk, PR-Action generates up to `pr_code_suggestions.num_code_suggestions_per_chunk` suggestions (default: 4).
+
+
 This approach has two main benefits:
+
 - Scalability: The number of suggestions scales with the PR size, rather than being fixed.
 - Quality: By processing smaller chunks, the AI can maintain higher quality suggestions, as larger contexts tend to decrease AI performance.
+
 Note: Chunking is primarily relevant for large PRs. For most PRs (up to 500 lines of code), PR-Action will be able to process the entire code in a single call.
 
 
@@ -163,7 +181,7 @@ If you want to enable also a global `best_practices.md` wiki file, set first in 
 enable_global_best_practices = true
 ```
 
-Then, create a `best_practices.md` wiki file in the root of [global](https://pr-action.github.io/usage-guide/configuration_options/#global-configuration-file) configuration repository,  `pr-action-settings`.
+Then, create a `best_practices.md` wiki file in the root of [global](https://pr-action-docs.khulnasoft.com/usage-guide/configuration_options/#global-configuration-file) configuration repository,  `pr-action-settings`.
 
 ##### Example results
 
@@ -225,6 +243,7 @@ Using a combination of both can help the AI model to provide relevant and tailor
         <td>Enable chunking the PR code and running the tool on each chunk. Default is true.</td>
       </tr>
       <tr>
+        <td><b>num_code_suggestions_per_chunk</b></td>
         <td>Number of code suggestions provided by the 'improve' tool, per chunk. Default is 4.</td>
       </tr>
       <tr>
@@ -240,11 +259,11 @@ Using a combination of both can help the AI model to provide relevant and tailor
 ## A note on code suggestions quality
 
 - AI models for code are getting better and better (Sonnet-3.5 and GPT-4), but they are not flawless. Not all the suggestions will be perfect, and a user should not accept all of them automatically. Critical reading and judgment are required.
-- While mistakes of the AI are rare but can happen, a real benefit from the suggestions of the `improve` (and [`review`](https://pr-action.github.io/tools/review/)) tool is to catch, with high probability, **mistakes or bugs done by the PR author**, when they happen. So, it's a good practice to spend the needed ~30-60 seconds to review the suggestions, even if not all of them are always relevant.
+- While mistakes of the AI are rare but can happen, a real benefit from the suggestions of the `improve` (and [`review`](https://pr-action-docs.khulnasoft.com/tools/review/)) tool is to catch, with high probability, **mistakes or bugs done by the PR author**, when they happen. So, it's a good practice to spend the needed ~30-60 seconds to review the suggestions, even if not all of them are always relevant.
 - The hierarchical structure of the suggestions is designed to help the user to _quickly_ understand them, and to decide which ones are relevant and which are not:
 
     - Only if the `Category` header is relevant, the user should move to the summarized suggestion description
     - Only if the summarized suggestion description is relevant, the user should click on the collapsible, to read the full suggestion description with a code preview example.
 
-- In addition, we recommend to use the [`extra_instructions`](https://pr-action.github.io/tools/improve/#extra-instructions-and-best-practices) field to guide the model to suggestions that are more relevant to the specific needs of the project. 
-- The interactive [PR chat](https://pr-action.github.io/chrome-extension/) also provides an easy way to get more tailored suggestions and feedback from the AI model.
+- In addition, we recommend to use the [`extra_instructions`](https://pr-action-docs.khulnasoft.com/tools/improve/#extra-instructions-and-best-practices) field to guide the model to suggestions that are more relevant to the specific needs of the project. 
+- The interactive [PR chat](https://pr-action-docs.khulnasoft.com/chrome-extension/) also provides an easy way to get more tailored suggestions and feedback from the AI model.

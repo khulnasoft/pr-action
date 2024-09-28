@@ -7,7 +7,7 @@ import time
 import requests
 import aiohttp
 
-from pr_action.action.pr_action import PRAction
+from pr_action.praction.pr_action import PRAction
 from pr_action.config_loader import get_settings
 from pr_action.git_providers import get_git_provider
 from pr_action.log import LoggingFormat, get_logger, setup_logger
@@ -37,8 +37,8 @@ def now() -> str:
     return now_utc
 
 async def async_handle_request(pr_url, rest_of_comment, comment_id, git_provider):
-    action = PRAction()
-    success = await action.handle_request(
+    praction = PRAction()
+    success = await praction.handle_request(
         pr_url,
         rest_of_comment,
         notify=lambda: git_provider.add_eyes_reaction(comment_id)
@@ -62,8 +62,8 @@ async def process_comment(pr_url, rest_of_comment, comment_id):
     try:
         git_provider = get_git_provider()(pr_url=pr_url)
         git_provider.set_pr(pr_url)
-        action = PRAction()
-        success = await action.handle_request(
+        praction = PRAction()
+        success = await praction.handle_request(
             pr_url,
             rest_of_comment,
             notify=lambda: git_provider.add_eyes_reaction(comment_id)
