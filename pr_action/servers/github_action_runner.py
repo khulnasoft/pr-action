@@ -3,7 +3,7 @@ import json
 import os
 from typing import Union
 
-from pr_action.action.pr_action import PRAction
+from pr_action.praction.pr_action import PRAction
 from pr_action.config_loader import get_settings
 from pr_action.git_providers import get_git_provider
 from pr_action.git_providers.utils import apply_repo_settings
